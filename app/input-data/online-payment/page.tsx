@@ -171,41 +171,6 @@ export default function OnlinePaymentInputPage() {
             <hr className="border-[#7D7D7D] opacity-30" />
           </div>
 
-          {/* Is Fraud */}
-          <div className="space-y-3 sm:space-y-4">
-            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 lg:gap-8">
-              <div className="flex-1 lg:max-w-md">
-                <label
-                  className="block text-black text-sm sm:text-base lg:text-lg font-medium mb-2 sm:mb-3"
-                  style={{ fontFamily: "Roboto, sans-serif" }}
-                >
-                  Is Fraud (Status Penipuan)
-                </label>
-                <select
-                  value={formData.isFraud}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange("isFraud", e.target.value)}
-                  className="w-full h-[35px] sm:h-[40px] bg-white/50 border border-[#7D7D7D] rounded-[5px] text-[#7D7D7D] text-sm sm:text-base focus:border-[#FF5F31] focus:ring-2 focus:ring-[#FF5F31]/20 transition-all"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                  required
-                >
-                  <option value="">Pilih status</option>
-                  <option value="0">0 - Bukan Penipuan</option>
-                  <option value="1">1 - Penipuan</option>
-                </select>
-              </div>
-              <div className="flex-1">
-                <p
-                  className="text-[#7D7D7D] text-sm sm:text-base leading-relaxed text-justify"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  Status apakah transaksi ini merupakan penipuan atau tidak. Digunakan untuk validasi dan training model
-                  deteksi fraud.
-                </p>
-              </div>
-            </div>
-            <hr className="border-[#7D7D7D] opacity-30" />
-          </div>
-
           {/* Old Balance Origin */}
           <div className="space-y-3 sm:space-y-4">
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 lg:gap-8">
