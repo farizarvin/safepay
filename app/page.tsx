@@ -1,103 +1,148 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useState, useEffect } from "react"
+import { Menu } from "lucide-react"
+import Chatbot from "@/components/chatbot"
+import MobileMenu from "@/components/mobile-menu"
+import HeroSection from "@/components/hero-section"
+import CreditCardSection from "@/components/credit-card-section"
+import OnlinePaymentSection from "@/components/online-payment-section"
+import ChatbotSection from "@/components/chatbot-section"
+import ArticlesSection from "@/components/articles-section"
+import Footer from "@/components/footer"
+
+export default function HomePage() {
+  const [showChatbot, setShowChatbot] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  const navItems = [
+    { name: "Beranda", href: "#hero" },
+    { name: "Online Payment", href: "#online-payment" },
+    { name: "Credit Card", href: "#credit-card" },
+    { name: "Safy", href: "#chatbot" },
+    { name: "Artikel", href: "#articles" },
+  ]
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="relative min-h-screen bg-[#0E1947] overflow-hidden">
+      {/* Background Blur Effects - Optimized for all devices */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Orange blur effects */}
+        <div className="absolute w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[450px] lg:h-[450px] left-[70%] top-[300px] sm:top-[400px] bg-[#FF5F31] opacity-50 sm:opacity-60 rounded-full blur-[120px] sm:blur-[180px] lg:blur-[250px] animate-pulse" />
+        <div className="absolute w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[450px] lg:h-[450px] left-[-80px] sm:left-[-120px] top-[800px] sm:top-[1000px] bg-[#FF5F31] opacity-50 sm:opacity-60 rounded-full blur-[120px] sm:blur-[180px] lg:blur-[250px] animate-pulse" />
+        <div className="absolute w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px] left-[65%] top-[1600px] sm:top-[2000px] bg-[#FF5F31] opacity-50 sm:opacity-60 rounded-full blur-[120px] sm:blur-[180px] lg:blur-[250px] animate-pulse" />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+        {/* Main orange blur effects */}
+        <div className="absolute w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[450px] lg:h-[450px] left-[60%] top-[-80px] sm:top-[-120px] bg-[#EE4312] opacity-70 sm:opacity-80 rounded-full blur-[120px] sm:blur-[180px] lg:blur-[250px]" />
+        <div className="absolute w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[450px] lg:h-[450px] left-[-100px] sm:left-[-150px] top-[1200px] sm:top-[1600px] bg-[#EE4312] opacity-70 sm:opacity-80 rounded-full blur-[120px] sm:blur-[180px] lg:blur-[250px]" />
+
+        {/* Blue-gray blur effects */}
+        <div className="absolute w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[450px] lg:h-[450px] left-[-100px] sm:left-[-150px] top-[50px] bg-[#647EA0] opacity-70 sm:opacity-80 rounded-full blur-[120px] sm:blur-[180px] lg:blur-[250px]" />
+        <div className="absolute w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[450px] lg:h-[450px] left-[65%] top-[1000px] sm:top-[1400px] bg-[#647EA0] opacity-70 sm:opacity-80 rounded-full blur-[120px] sm:blur-[180px] lg:blur-[250px]" />
+      </div>
+
+      {/* Decorative Grid Lines - Only on larger screens */}
+      <div className="absolute inset-0 opacity-10 sm:opacity-20 pointer-events-none overflow-hidden hidden md:block">
+        <div className="absolute left-[-200px] top-[-300px] rotate-[30deg]">
+          {Array.from({ length: 50 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-0 h-[500px] lg:h-[700px] border-l-[1px] lg:border-l-[2px] border-[#FF5F31] animate-pulse"
+              style={{
+                left: `${i * 18}px`,
+                animationDelay: `${i * 0.1}s`,
+              }}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* Navbar - Fully Responsive */}
+      <nav
+        className={`
+          fixed top-0 left-0 right-0 z-50 w-full h-16 sm:h-18 lg:h-20 shadow-[0px_4px_20px_5px_rgba(0,0,0,0.25)]
+          transition-all duration-500 ease-in-out 
+          ${isScrolled ? "bg-[#0E1947]/90 backdrop-blur-xl" : "bg-[#0E1947]"}
+          hover:bg-[#0E1947]/95 hover:backdrop-blur-xl
+        `}
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between max-w-7xl">
+          {/* Logo - Make it clickable */}
+          <button
+            onClick={() => scrollToSection("#hero")}
+            className="flex items-center group cursor-pointer hover:scale-105 transition-all duration-300"
+          >
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#D9D9D9] tracking-[0.07em] group-hover:text-white transition-colors duration-300">
+              SafePay.AI
+            </h1>
+            <div className="w-[24px] h-[4px] sm:w-[30px] sm:h-[6px] ml-2 mt-1 sm:mt-2 md:mt-3 bg-gradient-to-r from-[#EE4312] to-[#FF5F31] rounded-full group-hover:w-[30px] sm:group-hover:w-[40px] transition-all duration-300" />
+          </button>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+            {navItems.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => scrollToSection(item.href)}
+                className="text-white font-semibold text-lg xl:text-xl tracking-[0.07em] hover:text-[#FF5F31] transition-all duration-300 hover:scale-105 relative group py-2"
+              >
+                {item.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF5F31] group-hover:w-full transition-all duration-300"></span>
+              </button>
+            ))}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setShowMobileMenu(true)}
+            className="lg:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors duration-300"
+          >
+            <Menu className="w-6 h-6 sm:w-7 sm:h-7" />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      <MobileMenu
+        isOpen={showMobileMenu}
+        onClose={() => setShowMobileMenu(false)}
+        navItems={navItems}
+        onNavigate={scrollToSection}
+      />
+
+      {/* Sections */}
+      <HeroSection onLearnMore={() => scrollToSection("#articles")} onTalkToSafy={() => scrollToSection("#chatbot")} />
+      <CreditCardSection />
+      <OnlinePaymentSection />
+      <ChatbotSection onOpenChatbot={() => setShowChatbot(true)} />
+      <ArticlesSection />
+      <Footer />
+
+      {/* Chatbot */}
+      <Chatbot isOpen={showChatbot} onClose={() => setShowChatbot(false)} />
     </div>
-  );
+  )
 }
