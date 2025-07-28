@@ -1,22 +1,22 @@
 // app/input-data/online-payment/page.tsx (FULL CODE WITH SIMPLE RESULTS)
-"use client"
+"use client";
 
-import type React from "react"
-import { Button } from "@/components/ui/button"
-import Input from "@/components/ui/input"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { useState } from "react"
+import type React from "react";
+import { Button } from "@/components/ui/button";
+import Input from "@/components/ui/input";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 // Type definition untuk better type safety
 interface FraudDetectionResult {
-  model_type: string
-  is_fraud: boolean
-  fraud_probability: number
-  confidence_level: string
-  risk_score: string
-  transaction_amount: number
-  features_used: Record<string, string | number | boolean>
+  model_type: string;
+  is_fraud: boolean;
+  fraud_probability: number;
+  confidence_level: string;
+  risk_score: string;
+  transaction_amount: number;
+  features_used: Record<string, string | number | boolean>;
 }
 
 export default function OnlinePaymentInputPage() {
@@ -28,24 +28,24 @@ export default function OnlinePaymentInputPage() {
     newbalanceOrig: "",
     oldbalanceDest: "",
     newbalanceDest: "",
-  })
+  });
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [result, setResult] = useState<FraudDetectionResult | null>(null)
-  const [error, setError] = useState<string>("")
+  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState<FraudDetectionResult | null>(null);
+  const [error, setError] = useState<string>("");
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
-    setResult(null)
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    setResult(null);
 
     try {
       const requestData = {
@@ -56,29 +56,31 @@ export default function OnlinePaymentInputPage() {
         newbalanceOrig: parseFloat(formData.newbalanceOrig),
         oldbalanceDest: parseFloat(formData.oldbalanceDest),
         newbalanceDest: parseFloat(formData.newbalanceDest),
-      }
+      };
 
-      const response = await fetch('http://localhost:8000/predict/online-payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/predict/online-payment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
         },
-        body: JSON.stringify(requestData),
-      })
+      );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json()
-      setResult(data)
-
+      const data = await response.json();
+      setResult(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="relative min-h-screen bg-white">
@@ -86,7 +88,10 @@ export default function OnlinePaymentInputPage() {
       <div className="w-full h-[100px] sm:h-[120px] bg-white shadow-[0px_4px_20px_rgba(0,0,0,0.25)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between max-w-7xl">
           <div className="flex items-center">
-            <Link href="/" className="mr-4 sm:mr-6 hover:scale-110 transition-transform duration-300">
+            <Link
+              href="/"
+              className="mr-4 sm:mr-6 hover:scale-110 transition-transform duration-300"
+            >
               <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 flex items-center justify-center">
                 <ArrowLeft className="w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 text-[#0E1947] stroke-[3px] sm:stroke-[4px] hover:text-[#FF5F31] transition-colors" />
               </div>
@@ -98,7 +103,10 @@ export default function OnlinePaymentInputPage() {
               ONLINE PAYMENT CHECK
             </h1>
           </div>
-          <Link href="/" className="hover:scale-105 transition-transform duration-300">
+          <Link
+            href="/"
+            className="hover:scale-105 transition-transform duration-300"
+          >
             <div className="flex items-center cursor-pointer group">
               <h2
                 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-normal text-[#373642] tracking-[0.07em] group-hover:text-[#FF5F31] transition-colors"
@@ -114,8 +122,10 @@ export default function OnlinePaymentInputPage() {
 
       {/* Form Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <form onSubmit={handleSubmit} className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
-
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-6xl mx-auto space-y-6 sm:space-y-8"
+        >
           {/* Error Display */}
           {error && (
             <div className="bg-red-50 border border-red-300 p-4 rounded-lg">
@@ -139,7 +149,9 @@ export default function OnlinePaymentInputPage() {
                   type="number"
                   placeholder="Contoh: 1, 2, 3..."
                   value={formData.step}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange("step", e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleInputChange("step", e.target.value)
+                  }
                   className="w-full h-[35px] sm:h-[40px] bg-white/50 border border-[#7D7D7D] rounded-[5px] text-[#7D7D7D] text-sm sm:text-base placeholder:text-[#7D7D7D]/50 focus:border-[#FF5F31] focus:ring-2 focus:ring-[#FF5F31]/20 transition-all"
                   style={{ fontFamily: "Inter, sans-serif" }}
                   required
@@ -150,8 +162,8 @@ export default function OnlinePaymentInputPage() {
                   className="text-[#7D7D7D] text-sm sm:text-base leading-relaxed text-justify"
                   style={{ fontFamily: "Inter, sans-serif" }}
                 >
-                  Nomor urut atau langkah dalam serangkaian transaksi. Membantu mengidentifikasi pola transaksi
-                  berurutan yang mencurigakan.
+                  Nomor urut atau langkah dalam serangkaian transaksi. Membantu
+                  mengidentifikasi pola transaksi berurutan yang mencurigakan.
                 </p>
               </div>
             </div>
@@ -170,7 +182,9 @@ export default function OnlinePaymentInputPage() {
                 </label>
                 <select
                   value={formData.type}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange("type", e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    handleInputChange("type", e.target.value)
+                  }
                   className="w-full h-[35px] sm:h-[40px] bg-white/50 border border-[#7D7D7D] rounded-[5px] text-[#7D7D7D] text-sm sm:text-base focus:border-[#FF5F31] focus:ring-2 focus:ring-[#FF5F31]/20 transition-all"
                   style={{ fontFamily: "Inter, sans-serif" }}
                   required
@@ -188,7 +202,8 @@ export default function OnlinePaymentInputPage() {
                   className="text-[#7D7D7D] text-sm sm:text-base leading-relaxed text-justify"
                   style={{ fontFamily: "Inter, sans-serif" }}
                 >
-                  Jenis transaksi yang dilakukan. Setiap jenis memiliki pola dan risiko penipuan yang berbeda-beda.
+                  Jenis transaksi yang dilakukan. Setiap jenis memiliki pola dan
+                  risiko penipuan yang berbeda-beda.
                 </p>
               </div>
             </div>
@@ -210,7 +225,9 @@ export default function OnlinePaymentInputPage() {
                   step="0.01"
                   placeholder="Masukkan jumlah transaksi"
                   value={formData.amount}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange("amount", e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleInputChange("amount", e.target.value)
+                  }
                   className="w-full h-[35px] sm:h-[40px] bg-white/50 border border-[#7D7D7D] rounded-[5px] text-[#7D7D7D] text-sm sm:text-base placeholder:text-[#7D7D7D]/50 focus:border-[#FF5F31] focus:ring-2 focus:ring-[#FF5F31]/20 transition-all"
                   style={{ fontFamily: "Inter, sans-serif" }}
                   required
@@ -221,8 +238,8 @@ export default function OnlinePaymentInputPage() {
                   className="text-[#7D7D7D] text-sm sm:text-base leading-relaxed text-justify"
                   style={{ fontFamily: "Inter, sans-serif" }}
                 >
-                  Jumlah uang yang ditransaksikan. Nilai yang tidak biasa atau terlalu besar dapat mengindikasikan
-                  aktivitas penipuan.
+                  Jumlah uang yang ditransaksikan. Nilai yang tidak biasa atau
+                  terlalu besar dapat mengindikasikan aktivitas penipuan.
                 </p>
               </div>
             </div>
@@ -257,8 +274,8 @@ export default function OnlinePaymentInputPage() {
                   className="text-[#7D7D7D] text-sm sm:text-base leading-relaxed text-justify"
                   style={{ fontFamily: "Inter, sans-serif" }}
                 >
-                  Saldo rekening pengirim sebelum transaksi dilakukan. Membantu menganalisis pola perubahan saldo yang
-                  tidak wajar.
+                  Saldo rekening pengirim sebelum transaksi dilakukan. Membantu
+                  menganalisis pola perubahan saldo yang tidak wajar.
                 </p>
               </div>
             </div>
@@ -293,8 +310,8 @@ export default function OnlinePaymentInputPage() {
                   className="text-[#7D7D7D] text-sm sm:text-base leading-relaxed text-justify"
                   style={{ fontFamily: "Inter, sans-serif" }}
                 >
-                  Saldo rekening pengirim setelah transaksi selesai. Digunakan untuk memverifikasi konsistensi
-                  perhitungan saldo.
+                  Saldo rekening pengirim setelah transaksi selesai. Digunakan
+                  untuk memverifikasi konsistensi perhitungan saldo.
                 </p>
               </div>
             </div>
@@ -329,8 +346,8 @@ export default function OnlinePaymentInputPage() {
                   className="text-[#7D7D7D] text-sm sm:text-base leading-relaxed text-justify"
                   style={{ fontFamily: "Inter, sans-serif" }}
                 >
-                  Saldo rekening penerima sebelum menerima transaksi. Membantu mengidentifikasi pola penerimaan yang
-                  tidak biasa.
+                  Saldo rekening penerima sebelum menerima transaksi. Membantu
+                  mengidentifikasi pola penerimaan yang tidak biasa.
                 </p>
               </div>
             </div>
@@ -365,8 +382,8 @@ export default function OnlinePaymentInputPage() {
                   className="text-[#7D7D7D] text-sm sm:text-base leading-relaxed text-justify"
                   style={{ fontFamily: "Inter, sans-serif" }}
                 >
-                  Saldo rekening penerima setelah menerima transaksi. Digunakan untuk memverifikasi konsistensi dan
-                  mendeteksi anomali saldo.
+                  Saldo rekening penerima setelah menerima transaksi. Digunakan
+                  untuk memverifikasi konsistensi dan mendeteksi anomali saldo.
                 </p>
               </div>
             </div>
@@ -378,50 +395,83 @@ export default function OnlinePaymentInputPage() {
             <div className="bg-white border-2 border-gray-200 p-6 rounded-lg shadow-lg">
               <div className="text-center space-y-4">
                 {/* Status dengan Icon */}
-                <div className={`text-6xl ${result.is_fraud ? 'animate-pulse' : ''}`}>
-                  {result.is_fraud ? '🚨' : '✅'}
+                <div
+                  className={`text-6xl ${result.is_fraud ? "animate-pulse" : ""}`}
+                >
+                  {result.is_fraud ? "🚨" : "✅"}
                 </div>
 
                 {/* Status Text */}
-                <h2 className={`text-2xl font-bold ${result.is_fraud ? 'text-red-800' : 'text-green-800'
-                  }`}>
-                  {result.is_fraud ? 'FRAUD DETECTED' : 'LEGITIMATE TRANSACTION'}
+                <h2
+                  className={`text-2xl font-bold ${
+                    result.is_fraud ? "text-red-800" : "text-green-800"
+                  }`}
+                >
+                  {result.is_fraud
+                    ? "FRAUD DETECTED"
+                    : "LEGITIMATE TRANSACTION"}
                 </h2>
 
                 {/* ✅ TAMBAHAN: FRAUD/NOT FRAUD Text */}
-                <div className={`text-3xl font-bold ${result.is_fraud ? 'text-red-600' : 'text-green-600'
-                  }`}>
-                  {result.is_fraud ? 'FRAUD' : 'NOT FRAUD'}
+                <div
+                  className={`text-3xl font-bold ${
+                    result.is_fraud ? "text-red-600" : "text-green-600"
+                  }`}
+                >
+                  {result.is_fraud ? "FRAUD" : "NOT FRAUD"}
                 </div>
 
                 {/* Risk Score Badge */}
                 <div className="flex justify-center">
-                  <span className={`px-8 py-4 rounded-2xl text-xl font-bold shadow-lg ${result.risk_score === 'HIGH' ? 'bg-red-500 text-white' :
-                    result.risk_score === 'MEDIUM' ? 'bg-yellow-500 text-white' :
-                      'bg-green-500 text-white'
-                    }`}>
+                  <span
+                    className={`px-8 py-4 rounded-2xl text-xl font-bold shadow-lg ${
+                      result.risk_score === "HIGH"
+                        ? "bg-red-500 text-white"
+                        : result.risk_score === "MEDIUM"
+                          ? "bg-yellow-500 text-white"
+                          : "bg-green-500 text-white"
+                    }`}
+                  >
                     Risk Score: {result.risk_score}
                   </span>
                 </div>
                 {/* ✅ Rekomendasi berdasarkan hasil */}
                 <div className="mt-6 text-left">
-                  <h3 className="text-lg font-semibold text-[#373642] mb-2">Rekomendasi:</h3>
+                  <h3 className="text-lg font-semibold text-[#373642] mb-2">
+                    Rekomendasi:
+                  </h3>
                   {result.is_fraud ? (
                     <ul className="list-disc pl-5 space-y-1 text-red-700">
-                      <li>Transaksi mencurigakan terdeteksi — hentikan proses transfer segera.</li>
-                      <li>Hubungi layanan pelanggan untuk membekukan akun sementara.</li>
-                      <li>Jangan lakukan transaksi lanjutan hingga mendapatkan klarifikasi dari bank.</li>
-                      <li>Hubungi Pihak berwarjib untuk pengamanan lebih lanjut.</li>
+                      <li>
+                        Transaksi mencurigakan terdeteksi — hentikan proses
+                        transfer segera.
+                      </li>
+                      <li>
+                        Hubungi layanan pelanggan untuk membekukan akun
+                        sementara.
+                      </li>
+                      <li>
+                        Jangan lakukan transaksi lanjutan hingga mendapatkan
+                        klarifikasi dari bank.
+                      </li>
+                      <li>
+                        Hubungi Pihak berwarjib untuk pengamanan lebih lanjut.
+                      </li>
                     </ul>
                   ) : (
                     <ul className="list-disc pl-5 space-y-1 text-green-700">
                       <li>Transaksi online Anda aman dan berhasil diproses.</li>
-                      <li>Pastikan koneksi internet Anda tetap aman saat transaksi.</li>
-                      <li>Hindari membagikan detail rekening kepada pihak yang tidak dikenal.</li>
+                      <li>
+                        Pastikan koneksi internet Anda tetap aman saat
+                        transaksi.
+                      </li>
+                      <li>
+                        Hindari membagikan detail rekening kepada pihak yang
+                        tidak dikenal.
+                      </li>
                     </ul>
                   )}
                 </div>
-
               </div>
             </div>
           )}
@@ -440,12 +490,12 @@ export default function OnlinePaymentInputPage() {
                   <span>Predicting...</span>
                 </div>
               ) : (
-                'Predict'
+                "Predict"
               )}
             </Button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
